@@ -33,11 +33,10 @@
   width: fit-content;
 }
 .todo-item_delete {
+  color: black;
   width: 10px;
   width: fit-content;
-  color: red;
-  background: none;
-  border: none;
+  background-color: red;
   cursor: pointer;
 }
 
