@@ -13,9 +13,15 @@ export class NewTaskComponent {
   constructor(private todoService: TodoService) { }
 
   addTask() {
+
+    const verifyNewTaskTitle = this.newTaskTitle.trim();
+    if(!verifyNewTaskTitle) {
+      return;
+    }
+
     const newTodo: Todo = {
       id: this.todoService.getTodoNewId(),
-      title: this.newTaskTitle,
+      title: verifyNewTaskTitle,
       completed: false
     };
 
