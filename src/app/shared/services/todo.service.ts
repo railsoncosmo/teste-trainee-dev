@@ -85,4 +85,12 @@ export class TodoService {
     this.todos = this.todos.filter(({ completed }) => completed === false);
     this.updateLocalStorageAndSave();
   }
+
+  sortByTitle(asc: boolean): void {
+  this.todos.sort((a, b) => {
+    const result = a.title.localeCompare(b.title);
+    return asc ? result : -result;
+  });
+  this.saveToLocalStorage();
+}
 }

@@ -10,6 +10,7 @@ import { TodoService } from '../shared/services/todo.service';
 export class TodoComponent implements OnInit {
   todos: Todo[] = [];
   showCompletedTasks: boolean = false;
+  sortAsc: boolean = true;
 
   constructor(private todoService: TodoService) { }
 
@@ -25,12 +26,13 @@ export class TodoComponent implements OnInit {
 
   addTodo(newTodoTitle: string) {
     const newTodo: Todo = {
-      id: this.todos.length + 1,
+      id: this.todoService.getTodoNewId(),
       title: newTodoTitle,
       completed: false
     };
 
     this.todoService.addTodo(newTodo);
+    this.loadTodos();
   }
 
   updateTodo(updatedTodo: Todo) {
@@ -70,4 +72,23 @@ export class TodoComponent implements OnInit {
   get labelClearAll(){
     return 'Limpar Tudo'
   }
+
+  sortByTitle(): void {
+  this.sortAsc = !this.sortAsc;
+  this.todoService.sortByTitle(this.sortAsc);
+  this.loadTodos();
+  }
+
+  get filterIsCompletedTasks(): Todo[] {
+  let filter = this.showCompletedTasks 
+    ? this.todos.filter(todo => !todo.completed)
+    : this.todos;
+
+  filter = filter.slice().sort((a, b) => {
+    const result = a.title.localeCompare(b.title);
+    return this.sortAsc ? result : -result;
+  });
+
+  return filter;
+}
 }
