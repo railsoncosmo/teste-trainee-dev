@@ -1,123 +1,133 @@
-# Desafio de Código: Gerenciador de Tarefas (Angular)
 
-## 1. Visão Geral do Projeto
+# Relatório Técnico – Railson Cosmo de Sousa
 
-Bem-vindo(a) ao nosso desafio de código!
+## 1. Visão Geral da Solução
 
-Este repositório contém o código-fonte de uma aplicação de gerenciamento de tarefas desenvolvida em Angular. O projeto foi iniciado por um fornecedor anterior, mas foi entregue incompleto, instável e com diversos bugs.
-
----
-
-## 2. O Cenário
-
-A empresa IMTS Group precisa de uma aplicação funcional para que seus colaboradores gerenciem suas tarefas. O projeto foi entregue com uma série de problemas que impedem até mesmo sua inicialização, além de falhas de funcionalidade e usabilidade identificadas por um analista de qualidade (QA).
+Este projeto consiste em uma aplicação de gerenciamento de tarefas (to-do list) desenvolvida em Angular. O foco principal foi realizar correções de bugs identificados pelo QA, implementar melhorias solicitadas e garantir que a aplicação esteja funcional e com boa usabilidade.
 
 ---
 
-## 3. Sua Missão
+## 2. Como Executar a Aplicação
 
-Sua missão é assumir este projeto e transformá-lo em uma aplicação robusta e funcional. Você deverá:
-1.  **Diagnosticar e corrigir os erros** que atualmente impedem a aplicação de iniciar com o comando `npm start`.
-2.  **Implementar todas as correções e melhorias** detalhadas na lista de requisitos técnicos abaixo.
-3.  **Entregar o projeto final** seguindo as instruções de entrega.
+Siga os passos abaixo para executar o projeto localmente:
 
----
-
-## 4. Como Começar
-
-Para configurar o ambiente, siga os passos:
-
-1.  **Clone o repositório** para sua máquina local.
-2.  **Instale as dependências** do projeto:
-    ```bash
-    npm install
-    ```
-3.  **Tente iniciar o servidor** de desenvolvimento:
-    ```bash
-    npm start
-    ```
-
-> **Atenção:** A aplicação não irá iniciar corretamente. Seu primeiro desafio é investigar e consertar os erros que impedem a execução bem-sucedida deste comando.
+```bash
+git clone <https://github.com/railsoncosmo/teste-trainee-dev>
+cd <teste-trainee-dev>
+npm install
+npm start
+```
 
 ---
 
-## 5. Requisitos Técnicos (Lista de Tarefas do QA)
+## 3. Correção dos Erros Iniciais (`npm start`)
 
-A seguir estão os pontos exatos que você deve abordar.
+### Erros Identificados e Correções:
 
-### 5.1. Bugs a Corrigir
+- **Script de inicialização ausente:**  
+  Foi adicionado ao `package.json` o script `"start": "ng serve"` para a inicialização do projeto com comando `npm start`.
 
-1.  Ao clicar no botão “Salvar”, a tarefa está sendo adicionada duas vezes.
-2.  Só está sendo possível salvar uma tarefa a primeira vez que clica no botão “Salvar”, só é possível salvar uma nova tarefa após atualizar a página (F5)
-3.  O texto do botão de limpar todas as tarefas não está em português.
-4.  O botão “Exibir Tarefas Concluídas” está, na verdade, ocultando as tarefas concluídas.
-5.  O botão “Ocultar Tarefas Concluídas” tem o comportamento invertido, exibindo as tarefas concluídas.
-6.  Ao clicar em “Limpar Tarefas Concluídas”, a ação é executada sem pedir uma confirmação ao usuário.
-7.  O botão “Limpar Tarefas Concluídas” está removendo as tarefas não concluídas em vez das concluídas.
-8.  O botão “Editar” não está funcional. O comportamento esperado é: ao clicar, o campo “Título da Tarefa” deve ser preenchido com o texto da tarefa selecionada. Ao salvar, o item na lista deve ser atualizado e o campo de texto limpo.
-9.  O botão “Editar” está desalinhado e deve ser posicionado ao lado do botão “Remover”.
-10.  O botão “Remover” deve ter a cor vermelha para indicar uma ação destrutiva.
-11. A lista de tarefas não apresenta uma barra de rolagem quando o número de itens ultrapassa a altura do painel, impedindo a visualização de todas as tarefas.
-12. Salvar sem digitar um “Título da Tarefa” está adicionando um item em branco à lista.
-13. Digitar apenas espaços no campo “Título da Tarefa” e salvar também está adicionando um item em branco.
+- **Erro de importação do `HeaderComponent`:**  
+  Corrigido o nome incorreto do arquivo no `layout.module`.
 
-### 5.2. Melhorias a Implementar
+- **Importação ausente do `TodoService`:**  
+  O serviço não estava sendo importado no `new-task.component.ts`; o import foi adicionado corretamente.
 
-1.  Implementar um botão “Ordenar de A a Z” que, ao ser clicado, ordene alfabeticamente a lista de tarefas visíveis.
-2.  Permitir que o usuário adicione uma tarefa pressionando a tecla `Enter` no campo de texto, além do clique no botão “Salvar”.
-3.  Permitir a adição de múltiplas tarefas de uma só vez. O usuário deverá digitar os títulos separados pelo caractere `|` (pipe).
-4.  Implementar um filtro de palavras obscenas. Caso o usuário tente cadastrar uma tarefa contendo um palavrão, exiba a mensagem: “Não é permitido cadastrar tarefas com palavras obscenas.” (Sugestão de biblioteca: `https://github.com/web-mech/badwords`).
-5.  Adicionar a funcionalidade de exportar a lista de tarefas atual para um arquivo PDF. (Sugestão de biblioteca: `https://github.com/parallax/jsPDF`).
-6.  Substituir todos os `alert`s e `confirm`s nativos do navegador por uma experiência mais moderna, utilizando a biblioteca SweetAlert. (Sugestão: `https://sweetalert2.github.io/`).
+- **Importação duplicada/incorreta do `HeaderComponent`:**  
+  Corrigida a duplicação entre `app.module.ts` e `layout.module.ts`, garantindo o uso correto via `LayoutModule` que dá acesso a todos os componentes filhos.
+
+- **Inclusão desnecessária de fontes no `angular.json`:**  
+  Removido o pacote do FontAwesome, que não estava sendo utilizado.
 
 ---
 
-## 6. Instruções de Entrega
+## 4. Relatório de Correção de Bugs
 
-Ao finalizar todo o trabalho, você deve:
+1. **Tarefa sendo adicionada duas vezes:**  
+   O método `addTodo()` estava sendo chamado duas vezes dentro de `addTask()` — foi removida a duplicação.
 
-1.  **Fazer o commit de cada item separadamente**, conforme detalhado na seção "Boas Práticas" abaixo. O histórico de commits é uma parte crucial da avaliação. 
+2. **Só é possível adicionar uma tarefa após o reload da aplicação:**  
+   Existia uma condição `count` que limitava novas adições de tarefas — essa condição foi removida assim possibilitando a adição em realtime.
 
-2.  **Substituir o conteúdo deste `README.md`** pelo seu relatório técnico final. O seu relatório deve conter as seguintes seções:
+3. **Texto do botão "Clear All" em inglês:**  
+   Alterado para "Limpar Tudo" e aplicado diretamente no componente sem a necessidade do `getLabel`.
 
-    * **Relatório Técnico - [Seu Nome]**
-    * **1. Visão Geral da Solução:** Um breve resumo do que foi feito.
-    * **2. Como Executar a Aplicação:** Instruções claras para clonar, instalar e rodar o projeto (`npm install`, `npm start`).
-    * **3. Correção dos Erros Iniciais (`npm start`):** Descreva quais eram os erros que impediam a aplicação de rodar e como você os solucionou.
-    * **4. Relatório de Correção de Bugs:** Para cada bug da lista, explique a causa raiz e a solução que você implementou.
-    * **5. Relatório de Implementação de Melhorias:** Para cada melhoria, descreva sua abordagem técnica e quais bibliotecas foram utilizadas.
-    * **6. Relatório de Débito Técnico:** Para cada ítem da lista de bugs e melhorias que você não conseguiu resolver ou implementar, descreva quais foram as dificuldades que você enfrentou na qual fizerem com que você não tenha conseguido entregar.
-    * **7. Relatório de Melhorias:** Descreva quais melhorias (novas funcionalidades) você acha interessante que sejam implementadas para evoluir o sistema.
-    * **8. Decisões e Considerações:** (Opcional) Espaço para comentar qualquer decisão de arquitetura ou desafio interessante que você encontrou.
-    
+4. **Botão "Exibir Tarefas Concluídas" ocultando tarefas:**  
+   A função `filteredTodos()` estava com a lógica invertida, exibindo as tarefas incorretamente. Foi ajustada a ordem da filtragem e o valor booleano de controle.
+
+5. **Botão "Ocultar Tarefas Concluídas" exibindo tarefas:**  
+   Corrigida a lógica invertida na função `filteredTodos()`.
+
+6. **Limpar tarefas sem confirmação:**  
+   Foi implementada uma confirmação com biblioteca SweetAlert2 antes de executar a limpeza.
+
+7. **Remoção de tarefas erradas:**  
+   A lógica da função `clearCompletedTasks()` estava invertida, removendo as tarefas incorretas. Foi corrigido o filtro para excluir apenas as tarefas concluídas e adicionada uma verificação para evitar a ação caso não existam tarefas finalizadas.
+
+8. **Botão "Editar" não funcional:**  
+   (Pendente - ver Débito Técnico)
+
+9. **Botão "Editar" desalinhado:**  
+   Foi adicionado um container `<div>` para alinhar com o botão "Remover".
+
+10. **Botão "Remover" sem indicação de ação destrutiva:**  
+    Aplicada cor vermelha via CSS na classe `todo-item-delete`.
+
+11. **Lista sem barra de rolagem:**  
+    Foi alterada a propriedade `overflow-y: hidden` para `overflow-y: auto` ao container da lista de tarefas.
+
+12. **Salvar tarefa com título vazio:**  
+    Adicionada validação para impedir inserções em branco ou textos apenas com espaços em brancos.
+
+13. **Salvar tarefa com espaços apenas:**  
+    Validação aprimorada para impedir títulos compostos somente por espaços fossem adicionados a lista.
 
 ---
 
-## 7. Boas Práticas e Uso de Ferramentas
+## 5. Relatório de Implementação de Melhorias
 
-### Commits Atômicos
-Cada bug corrigido e cada melhoria implementada deve ser um commit individual no repositório. Suas mensagens de commit devem ser claras e descritivas (ex: `fix: corrige a duplicação de tarefas ao salvar` ou `feat: implementa a exportação para PDF`). Isso é fundamental para avaliarmos seu processo de desenvolvimento.
+1. **Botão “Ordenar de A a Z”:**  
+   Implementado botão com ordenação alfabética com base nos títulos das tarefas, com suporte a ordenação ascendente e descendente.
 
-### Uso de Inteligência Artificial
-O uso de ferramentas de Inteligência Artificial (como ChatGPT, GitHub Copilot, etc.) é permitido como um recurso de apoio. No entanto, o mais importante é que você **entenda profundamente** o código e as soluções que está entregando. Esteja preparado(a) para explicar suas escolhas e defender a lógica implementada no relatório e na entrevista técnica, pois o conhecimento da solução é de sua total responsabilidade.
+2. **Adicionar tarefa com tecla `Enter`:**  
+   Dentro do pacote HTML foi adicionado evento `(keydown.enter)` no campo de input que permite o submit da função ao usuário clicar no `enter`.
 
----
+3. **Filtro de palavrões:**  
+   Utilizada a biblioteca [badwords](https://github.com/web-mech/badwords). Criado serviço na classe TodoService com métodos: `clean`, `hasProfanity`, `addCustomWords` e `removeWords`, adicionado um regex onde também filtra palavras em outros idiomas com base no objeto auxiliar exportado no pacote `src/app/data/badWords.ts`.
 
-## 8. Critérios de Avaliação
+4. **Substituição dos `alert` e `confirm` nativos:**  
+   Implementada com a biblioteca [SweetAlert2](https://sweetalert2.github.io/), proporcionando uma experiência mais moderna para o usuário.
 
-Lembre-se que avaliaremos:
-* **Funcionalidade:** Cumprimento de todos os requisitos.
-* **Qualidade do Código:** Legibilidade, organização e boas práticas.
-* **Lógica e Eficiência:** Robustez das suas soluções.
-* **Comunicação:** Clareza do seu relatório técnico (`README.md`).
-* **Controle de Versão:** Qualidade e granularidade das suas mensagens de commit.
+5. **Exportar lista de tarefas para PDF:**  
+   Implementada a funcionalidade utilizando a biblioteca [jsPDF](https://github.com/parallax/jsPDF). Criado serviço na classe TodoService com método: `generatePdf`.
 
 ---
 
-## 9. Uma Palavra Final
+## 6. Relatório de Débito Técnico
 
-Entendemos que desafios como este podem ser complexos. Se você não conseguir concluir 100% dos itens, não desanime! Entregue o máximo que conseguir e documente seu progresso.
+As seguintes tarefas não foram implementadas devido às dificuldades descritas:
 
-Para nós, a jornada é tão importante quanto o destino. Não estamos buscando um profissional que saiba tudo, mas sim alguém com vontade de aprender, evoluir e que entenda que os erros são parte fundamental do crescimento.
+1. **Permitir a adição de múltiplas tarefas separadas por `|` (pipe):**  
+   Dificuldade em implementar a lógica que interpretasse corretamente o entendimento e separação das tarefas digitadas em um único input, garantindo a criação individual de cada tarefa.
 
-**Boa sorte!**
+2. **Botão “Editar” funcional:**  
+   Não foi possível compreender a forma clara a comunicação entre componentes via `@Input` e `@Output` para preencher o campo de edição do titulo e atualizar a tarefa na lista.
+
+---
+
+## 7. Sugestões de Melhorias Futuras
+
+- **Temas claros/escuros para a interface(DarkMode).**
+- **Acessibilidade da interface permitir que usuários com deficiência visual possam navegar usando softwares leitores de tela.**
+- **Acessibilidade em libras incluir recursos visuais que facilitem a compreensão por usuários surdos,.**
+- **Agrupamento de tarefas por categoria.**  
+- **Suporte a datas de vencimento e lembretes.**  
+- **Alertas de tarefas próximas ao vencimento.**   
+- **Integração com API ou utilizar banco de dados noSQL(Firebase, MongoDB).**
+
+---
+
+## 8. Decisões e Considerações
+
+Durante o desenvolvimento, optei por priorizar a clareza do código e a separação de responsabilidades (componentes e serviços). A modularização com `LayoutModule` e `TodoService` facilitou a manutenção e a escalabilidade da aplicação. Em relação às melhorias, busquei equilibrar a entrega com a qualidade da experiência do usuário.
+
