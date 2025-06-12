@@ -6,6 +6,7 @@
       class="new-task_input"
       type="text"
       [(ngModel)]="newTaskTitle"
+      (keydown.enter)="addTask()"
       placeholder="Descreva aqui de forma breve a sua tarefa."
     />
   </div>
