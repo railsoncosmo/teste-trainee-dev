@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
-import Swal from 'sweetalert2';
 import { TodoService } from '../shared/services/todo.service';
 import { PdfService } from '../shared/services/generate.pdf.service';
-import { CensorshipService } from '../shared/services/censorship.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-todo',
@@ -18,7 +18,6 @@ export class TodoComponent implements OnInit {
   constructor(
     private todoService: TodoService,
     private pdfService: PdfService,
-    private censorship: CensorshipService
   ) { }
 
   ngOnInit(): void {
@@ -56,24 +55,25 @@ export class TodoComponent implements OnInit {
     }
     
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you really want to clear all tasks?',
+      title: 'Tem certeza?',
+      text: 'Você realmente quer limpar todas as tarefas?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, clear all!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Sim, limpar tudo!',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if(result.isConfirmed){
         this.todoService.clearAll();
         this.loadTodos();
         
-    Swal.fire({
-      toast: true,
-      position: 'top-end',
-      icon: 'success',
-      title: 'Completed tasks cleared',
-      showConfirmButton: false,
-      timer: 2500
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Todas as tarefas foram deletadas',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
         });
       }
     })
@@ -83,27 +83,28 @@ export class TodoComponent implements OnInit {
     const completedTasks = this.todos.filter(todo => todo.completed);
     if (completedTasks.length === 0) return;
     Swal.fire({
-      title: 'Clear completed tasks?',
-      text: 'Are you sure you want to remove all completed tasks?',
+      title: 'Limpar tarefas concluídas?',
+      text: 'Você tem certeza que quer remover todas as tarefas concluídas?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, clear them',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Sim, limpar',
+      cancelButtonText: 'Cancelar',
   }).then((result) => {
     if (result.isConfirmed) {
       this.todoService.clearCompletedTasks();
       this.loadTodos();
-      
+
     Swal.fire({
       toast: true,
       position: 'top-end',
       icon: 'success',
-      title: 'Completed tasks cleared',
+      title: 'Tarefas concluídas removidas',
       showConfirmButton: false,
-      timer: 2500
-        })
-    }
-  });
+      timer: 2500,
+      timerProgressBar: true
+        });
+      }
+    });
   }
 
   toggleCompletedTasks() {
@@ -114,10 +115,6 @@ export class TodoComponent implements OnInit {
 
   filteredTodos() {
     return this.showCompletedTasks ? this.todos.filter(todo => !todo.completed) : this.todos;
-  }
-
-  get labelClearAll(){
-    return 'Limpar Tudo'
   }
 
   sortByTitle(): void {

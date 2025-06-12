@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Todo } from '../../shared/models/todo.model';
-import Swal from 'sweetalert2';
 import { TodoService } from '../../shared/services/todo.service';
 import { CensorshipService } from '../../shared/services/censorship.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-task',
