@@ -88,7 +88,6 @@ export class TodoComponent implements OnInit {
     const result = a.title.localeCompare(b.title);
     return this.sortAsc ? result : -result;
   });
-
-  return filter;
-}
+    return filter;
+  }
 }

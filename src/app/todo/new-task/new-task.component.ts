@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Todo } from '../../shared/models/todo.model';
 import { TodoService } from '../../shared/services/todo.service';
+import { CensorshipService } from '../../shared/services/censorship.service';
 
 @Component({
   selector: 'app-new-task',
@@ -10,18 +11,24 @@ import { TodoService } from '../../shared/services/todo.service';
 export class NewTaskComponent {
   newTaskTitle: string = '';
 
-  constructor(private todoService: TodoService) { }
+  constructor(
+    private todoService: TodoService,
+    private censorshipService: CensorshipService,
+  ) { }
 
   addTask() {
 
-    const verifyNewTaskTitle = this.newTaskTitle.trim();
-    if(!verifyNewTaskTitle) {
+    const rawTitle = this.newTaskTitle.trim();
+    if(!rawTitle) {
       return;
+    } else if (this.censorshipService.hasProfanity(rawTitle)) {
+      alert('O título contém palavras impróprias e foi ajustado automaticamente.');
     }
 
+    const cleanTitle = this.censorshipService.clean(rawTitle);
     const newTodo: Todo = {
       id: this.todoService.getTodoNewId(),
-      title: verifyNewTaskTitle,
+      title: cleanTitle,
       completed: false
     };
 
