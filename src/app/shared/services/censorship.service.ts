@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Filter } from 'bad-words';
+import { badWordsList } from 'src/app/data/badWordsList';
+
+export interface CensorshipWordProps {
+  word: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +14,9 @@ export class CensorshipService {
   private filter = new Filter({ replaceRegex: /[A-Za-z0-9가-힣_]/g });
 
   constructor() {
-    this.filter.addWords('idiota', 'estupido', 'burro', 'imbecil', 'otario');
+
+  const words = badWordsList.map((item: CensorshipWordProps) => item.word);
+    this.filter.addWords(...words);
   }
 
   clean(text: string): string {
