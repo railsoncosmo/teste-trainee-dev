@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
 import { TodoService } from '../shared/services/todo.service';
+import { PdfService } from '../shared/services/generate.pdf.service';
 
 @Component({
   selector: 'app-todo',
@@ -12,7 +13,10 @@ export class TodoComponent implements OnInit {
   showCompletedTasks: boolean = false;
   sortAsc: boolean = true;
 
-  constructor(private todoService: TodoService) { }
+  constructor(
+    private todoService: TodoService,
+    private pdfService: PdfService
+  ) { }
 
   ngOnInit(): void {
     this.loadTodos();
@@ -89,5 +93,9 @@ export class TodoComponent implements OnInit {
     return this.sortAsc ? result : -result;
   });
     return filter;
+  }
+
+  gerarPdf() {
+    this.pdfService.generatePdf(this.filterIsCompletedTasks);
   }
 }
