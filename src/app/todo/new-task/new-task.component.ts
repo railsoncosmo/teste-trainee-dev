@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Todo } from '../../shared/models/todo.model';
+import Swal from 'sweetalert2';
 import { TodoService } from '../../shared/services/todo.service';
 import { CensorshipService } from '../../shared/services/censorship.service';
 
@@ -22,7 +23,14 @@ export class NewTaskComponent {
     if(!rawTitle) {
       return;
     } else if (this.censorshipService.hasProfanity(rawTitle)) {
-      alert('O título contém palavras impróprias e foi ajustado automaticamente.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Conteúdo impróprio',
+        text: 'Por favor, evite usar palavras ofensivas.',
+        confirmButtonText: 'Ok',
+        timer: 2500
+      });
+      return;
     }
 
     const cleanTitle = this.censorshipService.clean(rawTitle);

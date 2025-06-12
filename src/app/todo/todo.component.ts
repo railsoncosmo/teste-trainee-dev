@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
+import Swal from 'sweetalert2';
 import { TodoService } from '../shared/services/todo.service';
 import { PdfService } from '../shared/services/generate.pdf.service';
+import { CensorshipService } from '../shared/services/censorship.service';
 
 @Component({
   selector: 'app-todo',
@@ -15,7 +17,8 @@ export class TodoComponent implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private censorship: CensorshipService
   ) { }
 
   ngOnInit(): void {
@@ -48,19 +51,59 @@ export class TodoComponent implements OnInit {
   }
 
   clearAll() {
-    if (this.todos.length > 0 && confirm('Are you sure you want to clear all tasks?')) {
-      this.todoService.clearAll();
-      this.loadTodos();
+    if (this.todos.length === 0) {
+      return;
     }
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to clear all tasks?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, clear all!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.todoService.clearAll();
+        this.loadTodos();
+        
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Completed tasks cleared',
+      showConfirmButton: false,
+      timer: 2500
+        });
+      }
+    })
   }
 
   clearCompletedTasks() {
     const completedTasks = this.todos.filter(todo => todo.completed);
     if (completedTasks.length === 0) return;
-    if (confirm('Are you sure you want to clear all tasks completed?')){
+    Swal.fire({
+      title: 'Clear completed tasks?',
+      text: 'Are you sure you want to remove all completed tasks?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, clear them',
+      cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.todoService.clearCompletedTasks();
       this.loadTodos();
+      
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Completed tasks cleared',
+      showConfirmButton: false,
+      timer: 2500
+        })
     }
+  });
   }
 
   toggleCompletedTasks() {
